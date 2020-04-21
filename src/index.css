@@ -19,6 +19,7 @@
 
 .imgs-to-gif .images img {
     height: 88px;
+    width: auto;
     margin: 8px;
     border: 1px solid #d8d8d8;
     padding: 4px;
@@ -70,23 +71,10 @@
     cursor: pointer;
 }
 
-.imgs-to-gif .add:hover {
-    background-color: rgb(227, 227, 227);
-    color: white;
-}
-
-.imgs-to-gif .uk-icon-button {
-    background-color: #9E9E9E;
-    color: white;
-}
-
-.imgs-to-gif .uk-icon-button::after {
-    content: attr(data-tip);
-    position: absolute;
-    margin-left: 56px;
-    font-size: 14px;
-    font-weight: 300;
-    color: #4a4a4a;
+.imgs-to-gif .cdx-button {
+    outline: none;
+    min-width: 98px;
+    margin: 32px;
 }
 
 .imgs-to-gif .gif-result {

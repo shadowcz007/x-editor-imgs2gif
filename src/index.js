@@ -47,6 +47,7 @@ class Imgs2gif {
             baseClass: this.api.styles.block,
             loading: this.api.styles.loader,
             input: this.api.styles.input,
+            button: this.api.styles.button,
             settingsButton: this.api.styles.settingsButton,
             settingsButtonActive: this.api.styles.settingsButtonActive,
 
@@ -55,7 +56,6 @@ class Imgs2gif {
              */
             wrapperBlock: 'imgs-to-gif',
             blockTag: 'tag',
-            addBtn: "add",
             imagesContainer: "images",
             gifResult: "gif-result",
             caption: "imgs-to-gif-caption",
@@ -73,29 +73,44 @@ class Imgs2gif {
         this.wrapper.block.classList.add(this.CSS.wrapperBlock);
         this.wrapper.block.classList.add(this.CSS.blockTag);
 
-        const input = document.createElement('input');
-        const button = document.createElement("div");
+        const input = this._createInput();
+        const createBtn = this._createBtn();
+
+        const addBtn = document.createElement("button");
 
         const imgsDiv = document.createElement("div");
         imgsDiv.classList.add(this.CSS.imagesContainer);
 
+        this.wrapper.block.appendChild(addBtn);
+        this.wrapper.block.appendChild(createBtn);
         this.wrapper.block.appendChild(input);
-        imgsDiv.appendChild(button);
         this.wrapper.block.appendChild(imgsDiv);
 
-
-        button.classList.add(this.CSS.addBtn);
-        button.innerHTML = `<a class="uk-icon-button" uk-icon="plus" data-tip="从本地添加"></a>`;
-        button.addEventListener("click", (e) => {
+        addBtn.classList.add(this.CSS.button);
+        addBtn.innerText = `从本地添加`;
+        addBtn.addEventListener("click", (e) => {
             e.preventDefault();
             input.click();
         });
+
+
+        if (this.data && this.data.images && this.data.images.length > 0) {
+            Array.from(this.data.images, img => this._createImage(img));
+            return this.wrapper.block;
+        } else {
+            addBtn.click();
+        }
+
+        return this.wrapper.block;
+    }
+
+    _createInput() {
+        let input = document.createElement('input');
 
         input.setAttribute("type", "file");
         input.setAttribute("accept", 'image/*');
         input.setAttribute("multiple", true);
 
-        // input.value = this.data && this.data.url ? this.data.url : '';
         input.addEventListener("change", (e) => {
             e.preventDefault();
             if (e.target.files.length > 0) {
@@ -109,45 +124,51 @@ class Imgs2gif {
                 };
             }
         });
+        return input;
+    }
 
-        if (this.data && this.data.images && this.data.images.length > 0) {
-            Array.from(this.data.images, img => this._createImage(img));
-            return this.wrapper.block;
-        } else {
-            button.click();
-        }
-
-        return this.wrapper.block;
+    _createBtn() {
+        let button = document.createElement('button');
+        button.classList.add(this.CSS.button);
+        button.innerText = "合成";
+        if (this.data.images.length > 1) {
+            this.api.listeners.on(button, 'click', (e) => {
+                e.preventDefault();
+                this.wrapper.block.classList.remove(this.CSS.blockTag);
+                let imgs = this.wrapper.block.querySelectorAll("img");
+                this._createGifFromImages(imgs);
+            });
+        };
+        return button
     }
 
     renderSettings() {
         // console.log(this.renderSettings)
         this.wrapper.renderSettings = document.createElement('div');
 
-        let imgs = this.wrapper.block.querySelectorAll("img");
-        // console.log(imgs)
-        if (imgs.length > 1) {
-            this.settings.forEach(tune => {
-                let button = document.createElement('div');
-                button.classList.add(this.api.styles.settingsButton);
-                // button.classList.add(this.api.styles.disabledBtn);
+        // let imgs = this.wrapper.block.querySelectorAll("img");
+        // // console.log(imgs)
+        // if (imgs.length > 1) {
+        //     this.settings.forEach(tune => {
+        //         let button = document.createElement('div');
+        //         button.classList.add(this.api.styles.settingsButton);
+        //         // button.classList.add(this.api.styles.disabledBtn);
 
-                button.innerHTML = tune.icon;
-                this.wrapper.renderSettings.appendChild(button);
+        //         button.innerHTML = tune.icon;
+        //         this.wrapper.renderSettings.appendChild(button);
 
-                this.api.listeners.on(button, 'click', (e) => {
-                    // this._toggleTune(tune.name);
-                    e.preventDefault();
-                    this.wrapper.block.classList.remove(this.CSS.blockTag);
-                    let imgs = this.wrapper.block.querySelectorAll("img");
-                    // console.log(imgs)
-                    this._createGifFromImages(imgs);
-                    button.classList.toggle(this.api.styles.settingsButtonActive);
+        //         this.api.listeners.on(button, 'click', (e) => {
+        //             // this._toggleTune(tune.name);
+        //             e.preventDefault();
+        //             this.wrapper.block.classList.remove(this.CSS.blockTag);
+        //             let imgs = this.wrapper.block.querySelectorAll("img");
+        //             this._createGifFromImages(imgs);
+        //             button.classList.toggle(this.api.styles.settingsButtonActive);
 
-                });
+        //         });
 
-            });
-        };
+        //     });
+        // };
 
         return this.wrapper.renderSettings;
     }
@@ -230,7 +251,7 @@ class Imgs2gif {
             };
 
             let div = document.createElement("div");
-            div.innerHTML = `<img data-base64="${base64}" data-src="${url}" data-width="${width}" data-height="${height}" alt="gif" uk-img>`;
+            div.innerHTML = `<img data-base64="${base64}" src="${url}" width="${width}" height="${height}" alt="gif">`;
             this.wrapper.block.querySelector("." + this.CSS.imagesContainer).appendChild(div);
             div.addEventListener("click", (e) => {
                 e.preventDefault();
