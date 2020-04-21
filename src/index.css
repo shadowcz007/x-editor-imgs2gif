@@ -1,0 +1,107 @@
+.imgs-to-gif {
+    margin: 24px 0;
+}
+
+.tag::before {
+    content: attr(data-title);
+    font-size: 12px;
+    font-weight: 800;
+    color: #6e8a98;
+    background-color: #fff59f;
+    padding: 4px;
+    letter-spacing: 1px;
+}
+
+.imgs-to-gif .images {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.imgs-to-gif .images img {
+    height: 88px;
+    margin: 8px;
+    border: 1px solid #d8d8d8;
+    padding: 4px;
+}
+
+.imgs-to-gif input {
+    display: none;
+}
+
+.imgs-to-gif-caption[contenteditable] {
+    outline: none;
+    border-radius: 0;
+    font-size: 12px;
+    display: inline;
+    width: auto;
+    margin-top: 10px;
+    margin-bottom: 24px;
+    border: none!important;
+    border-bottom: 1px #d8d8d8 solid!important;
+    text-align: center;
+}
+
+.imgs-to-gif-caption[contentEditable=true][data-placeholder]:empty::before {
+    position: absolute;
+    content: attr(data-placeholder);
+    color: #707684;
+    font-weight: normal;
+    opacity: 1;
+    border: none;
+    outline: none;
+}
+
+.imgs-to-gif-caption[contentEditable=true][data-placeholder]:empty:focus::before {
+    opacity: 0;
+    border: none;
+    outline: none;
+}
+
+.imgs-to-gif .add {
+    display: flex;
+    width: 200px;
+    background: #eeeeee;
+    /* height: 88px; */
+    margin: 8px;
+    border-radius: 4px;
+    padding: 28px;
+    /* justify-content: center; */
+    /* align-items: center; */
+    cursor: pointer;
+}
+
+.imgs-to-gif .add:hover {
+    background-color: rgb(227, 227, 227);
+    color: white;
+}
+
+.imgs-to-gif .uk-icon-button {
+    background-color: #9E9E9E;
+    color: white;
+}
+
+.imgs-to-gif .uk-icon-button::after {
+    content: attr(data-tip);
+    position: absolute;
+    margin-left: 56px;
+    font-size: 14px;
+    font-weight: 300;
+    color: #4a4a4a;
+}
+
+.imgs-to-gif .gif-result {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.imgs-to-gif .gif-result img {
+    width: 50%;
+    max-width: 300px;
+}
+
+.imgs-to-gif-disabled-btn {
+    opacity: 0.2;
+    cursor: not-allowed;
+}
