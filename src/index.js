@@ -131,14 +131,16 @@ class Imgs2gif {
         let button = document.createElement('button');
         button.classList.add(this.CSS.button);
         button.innerText = "合成";
-        if (this.data.images.length > 1) {
-            this.api.listeners.on(button, 'click', (e) => {
+
+        this.api.listeners.on(button, 'click', (e) => {
+            if (this.data && this.data.images && this.data.images.length > 1) {
                 e.preventDefault();
                 this.wrapper.block.classList.remove(this.CSS.blockTag);
                 let imgs = this.wrapper.block.querySelectorAll("img");
                 this._createGifFromImages(imgs);
-            });
-        };
+            };
+        });
+
         return button
     }
 
