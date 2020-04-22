@@ -98,6 +98,7 @@ class Imgs2gif {
             Array.from(this.data.images, img => this._createImage(img));
             return this.wrapper.block;
         } else {
+            this.data.images = [];
             addBtn.click();
         }
 
@@ -119,6 +120,7 @@ class Imgs2gif {
                     const file = e.target.files[index];
                     if (file.type.match(/image\//) && !file.type.match(/\/gif/)) {
                         let url = URL.createObjectURL(file);
+                        this.data.images.push(url);
                         this._createImage(url);
                     };
                 };
@@ -133,8 +135,10 @@ class Imgs2gif {
         button.innerText = "合成";
 
         this.api.listeners.on(button, 'click', (e) => {
+            e.preventDefault();
+            //console.log(this.data)
             if (this.data && this.data.images && this.data.images.length > 1) {
-                e.preventDefault();
+
                 this.wrapper.block.classList.remove(this.CSS.blockTag);
                 let imgs = this.wrapper.block.querySelectorAll("img");
                 this._createGifFromImages(imgs);
