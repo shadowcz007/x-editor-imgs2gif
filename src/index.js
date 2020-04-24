@@ -129,6 +129,7 @@ class Imgs2gif {
         return input;
     }
 
+
     _createBtn() {
         let button = document.createElement('button');
         button.classList.add(this.CSS.button);
